@@ -27,12 +27,12 @@ namespace ReturnAttributeTests
             Init();
             using (var db = DbFactory.Open())
             {
-                db.CreateTable<User>(false);
+                db.CreateTable<User>(true);
 
                 var user = new User { Name = "me", Email = "me@mydomain.com" };
                 user.UserName = user.Email;
 
-                db.Insert(user);
+                db.Insert(user);               
                 Assert.That(user.Id, Is.GreaterThan(0), "normal Insert");
             }
         }
@@ -43,7 +43,7 @@ namespace ReturnAttributeTests
             Init();
             using (var db = DbFactory.Open())
             {
-                db.CreateTable<User>(false);
+                db.CreateTable<User>(true);
 
                 var user = new User { Name = "me", Email = "me@mydomain.com" };
                 user.UserName = user.Email;
@@ -60,14 +60,14 @@ namespace ReturnAttributeTests
             Init();
             using (var db = DbFactory.Open())
             {
-                db.CreateTable<User>(false);
+                db.CreateTable<User>(true);
 
                 var user = new User { Name = "me", Email = "me@mydomain.com" };
                 user.UserName = user.Email;
 
                 var id = db.Insert(user);
                 var sql = db.GetLastSql();
-                Assert.That(sql, Is.EqualTo("INSERT INTO \"User\" (\"Name\",\"UserName\",\"Email\") OUTPUT INSERTED.\"Id\" VALUES (@Name,@UserName,@Email)"), "normal Insert");
+                Assert.That(sql, Is.EqualTo("INSERT INTO \"User\" (\"Id\",\"Name\",\"UserName\",\"Email\") OUTPUT INSERTED.\"Id\" VALUES (NEXT VALUE FOR \"Gen_User_Id\",@Name,@UserName,@Email)"), "normal Insert");
             }
         }
     }

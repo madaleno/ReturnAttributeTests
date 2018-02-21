@@ -16,6 +16,7 @@ namespace ReturnAttributeTests
         [Return]
         [PrimaryKey]
         [AutoIncrement]
+        [Sequence("Gen_User_Id")]
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -34,7 +35,7 @@ namespace ReturnAttributeTests
 
         public TestsBase()
         {
-            typeof(User).AddAttributes(new AliasAttribute("Users"));
+            //typeof(User).AddAttributes(new AliasAttribute("Users"));
         }
 
         protected void Init()
